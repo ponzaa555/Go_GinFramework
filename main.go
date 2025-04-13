@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ponzaa555/Gin_Intro/middleware"
 )
 
 func main() {
@@ -16,27 +17,37 @@ func main() {
 		router := gin.New()
 		router.Use(gin.Logger())
 	*/
+	// router.Use(middleware.Authenticate) // applay all route
 
+	router.POST("/CreateUser", middleware.Authenticate, middleware.Addheder, createUser)
+	router.GET("/getUrlData/:name/:age", getUrlData)
+	router.GET("/GetData", getData)
+	router.GET("/getQuueryString", getQueryString)
+
+	// Appaly middleware to group
+	/*
+		admin := router.Group("/admin", middleware.Authenticate )
+		{
+			//path : /admin/GetData
+			admin.GET("/GetData", getData)
+		}
+	*/
+	/* Group Route
 	// set auth before access this page
 	auth := gin.BasicAuth(gin.Accounts{
 		"user": "pass",
 	})
-
-	router.POST("/CreateUser", createUser)
-	router.GET("/getUrlData/:name/:age", getUrlData)
-
-	//
 	admin := router.Group("/admin", auth)
 	{
 		//path : /admin/GetData
 		admin.GET("/GetData", getData)
 	}
-
 	client := router.Group("client")
 	{
 		//path :/client/getQuueryString
 		client.GET("/getQuueryString", getQueryString)
 	}
+	*/
 	server := &http.Server{
 		// config router
 		Addr:         ":8080",
@@ -44,7 +55,6 @@ func main() {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-
 	server.ListenAndServe()
 }
 
