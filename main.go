@@ -1,23 +1,52 @@
 package main
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ponzaa555/Gin_Intro/log"
 	"github.com/ponzaa555/Gin_Intro/middleware"
 )
 
 func main() {
 
 	router := gin.Default()
+
+	//เก็บ log ไปที่ file แทน
+	// os.Stdout write log file as terminal
+	f, _ := os.Create("ginLoggin.log")
+
 	/*
-		ถ้าใช้ gin.New() อยากให้ Log จะต้องใช้ router.Use(gin.Logger())
-		router := gin.New()
-		router.Use(gin.Logger())
+		LogFormat
+		{ ::1 - [Sun, 13 Apr 2025 18:04:39 +07] "POST /CreateUser HTTP/1.1 255625 PostmanRuntime/7.43.3 "" %!s(MISSING)"}
+			[GIN] 2025/04/13 - 18:04:39 | 200 |     922.959µs |             ::1 | POST     "/CreateUser"
 	*/
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+
+	/*
+		//ถ้าใช้ gin.New() อยากให้ Log จะต้องใช้ router.Use(gin.Logger())
+		router := gin.New()
+		//router.Use(gin.Logger())
+	*/
+
+	// gin will logging with this format output  log.FormatsLogs
+	router.Use(gin.LoggerWithFormatter(log.FormatLogsJson))
+
 	// router.Use(middleware.Authenticate) // applay all route
+	/*
+		GET    /getUrlData/:name/:age    --> main.getUrlData (3 handlers)
+		config Termianl log
+		2025/04/13 17:52:47 endpoint formatted imformation is 5 /CreateUser POST main.
+		[GIN] 2025/04/13 - 17:53:01 | 200 |      87.167µs |             ::1 | POST     "/CreateUser"
+
+		gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+			log.Printf("endpoint formatted imformation is %v %v %v %v\n", nuHandlers, absolutePath, httpMethod, handlerName)
+		}
+	*/
 
 	router.POST("/CreateUser", middleware.Authenticate, middleware.Addheder, createUser)
 	router.GET("/getUrlData/:name/:age", getUrlData)

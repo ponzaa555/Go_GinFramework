@@ -1,0 +1,8 @@
+[GIN-debug] POST   /CreateUser               --> main.createUser (6 handlers)
+[GIN-debug] GET    /getUrlData/:name/:age    --> main.getUrlData (4 handlers)
+[GIN-debug] GET    /GetData                  --> main.getData (4 handlers)
+[GIN-debug] GET    /getQuueryString          --> main.getQueryString (4 handlers)
+{"TimeStamp":"2025-04-14T00:49:52.021975+07:00","StatusCode":200,"Latency":206833,"ClientIP":"::1","Method":"GET","Path":"/getQuueryString?name=Mark\u0026age=10000","ErrorMessage":"","RequestProto":"HTTP/1.1"}
+{"TimeStamp":"2025-04-14T00:49:59.214238+07:00","StatusCode":200,"Latency":34875,"ClientIP":"::1","Method":"POST","Path":"/CreateUser","ErrorMessage":"","RequestProto":"HTTP/1.1"}
+{"TimeStamp":"2025-04-14T00:50:07.676478+07:00","StatusCode":200,"Latency":75083,"ClientIP":"::1","Method":"GET","Path":"/getUrlData/Mark/30","ErrorMessage":"","RequestProto":"HTTP/1.1"}
+{"TimeStamp":"2025-04-14T00:50:12.655991+07:00","StatusCode":200,"Latency":23375,"ClientIP":"::1","Method":"GET","Path":"/getQuueryString?name=Mark\u0026age=10000","ErrorMessage":"","RequestProto":"HTTP/1.1"}
